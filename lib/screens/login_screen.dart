@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/models.dart';
 
 class LoginScreen extends StatelessWidget {
   final String? userName;
@@ -20,7 +22,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Center(
           child: ListView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -61,7 +63,12 @@ class LoginScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        onPressed: () async {},
+        onPressed: () {
+          Provider.of<AppStateManger>(context, listen: false).login(
+            userName: 'mockUsername',
+            password: 'mockPassword',
+          );
+        },
       ),
     );
   }

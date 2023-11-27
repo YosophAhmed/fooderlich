@@ -7,3 +7,4 @@ export 'grocery_manger.dart';
 export 'user.dart';
 export 'app_cache.dart';
 export 'app_state_manger.dart';
+export 'profile_manger.dart';

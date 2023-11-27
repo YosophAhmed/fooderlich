@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fooderlich/models/profile_manger.dart';
-import 'package:fooderlich/screens/login_screen.dart';
 import 'fooderlich_theme.dart';
-import 'screens/home.dart';
 import 'package:provider/provider.dart';
 import 'models/models.dart';
+import 'navigation/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,9 +27,15 @@ class Fooderlich extends StatefulWidget {
 class _FooderlichState extends State<Fooderlich> {
   late final _groceryManger = GroceryManger();
   late final _profileManger = ProfileManger();
+  late final _appRouter = AppRouter(
+    widget.appStateManger,
+    _profileManger,
+    _groceryManger,
+  );
 
   @override
   Widget build(BuildContext context) {
+    final router = _appRouter.router;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -51,11 +56,13 @@ class _FooderlichState extends State<Fooderlich> {
           } else {
             themeData = FooderlichTheme.light();
           }
-          return MaterialApp(
+          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             theme: themeData,
             title: 'Fooderlich',
-            home: const LoginScreen(),
+            routerDelegate: router.routerDelegate,
+            routeInformationParser: router.routeInformationParser,
+            routeInformationProvider: router.routeInformationProvider,
           );
         },
       ),
