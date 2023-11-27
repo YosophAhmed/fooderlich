@@ -39,7 +39,12 @@ dependencies:
   provider:
   flutter_colorpicker:
   intl:
-  uuid: 
+  uuid:
+  smooth_page_indicator:
+  url_launcher:
+  shared_preferences:
+  webview_flutter:
+  go_router: 
 
 dev_dependencies:
   flutter_test:

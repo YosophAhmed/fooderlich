@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fooderlich/screens/explore_screen.dart';
-import 'screens/recipes_screen.dart';
-import 'screens/grocery_screen.dart';
+import 'recipes_screen.dart';
+import 'grocery_screen.dart';
 import 'package:provider/provider.dart';
-import 'models/models.dart';
+import '../models/models.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final int currentTab;
+
+  const Home({
+    super.key,
+    required this.currentTab,
+  });
 
   @override
   State<Home> createState() => _HomeState();
@@ -21,9 +26,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TabManger>(builder: (
+    return Consumer<AppStateManger>(builder: (
       context,
-      tabManger,
+      appStateManger,
       child,
     ) {
       return Scaffold(
@@ -33,17 +38,20 @@ class _HomeState extends State<Home> {
             style: Theme.of(context).textTheme.headline6,
           ),
           centerTitle: true,
+          actions: [
+            profileButton(widget.currentTab),
+          ],
         ),
         body: IndexedStack(
-          index: tabManger.selectedTab,
+          index: appStateManger.getSelectedTab,
           children: pages,
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor:
               Theme.of(context).textSelectionTheme.selectionColor,
-          currentIndex: tabManger.selectedTab,
+          currentIndex: appStateManger.getSelectedTab,
           onTap: (index) {
-            tabManger.goToTab(index: index);
+            appStateManger.goToTab(index: index);
           },
           items: const [
             BottomNavigationBarItem(
@@ -62,5 +70,20 @@ class _HomeState extends State<Home> {
         ),
       );
     });
+  }
+
+  Widget profileButton(int currentTab) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: GestureDetector(
+        child: const CircleAvatar(
+          backgroundColor: Colors.transparent,
+          backgroundImage: AssetImage(
+            'assets/profile_pics/person_stef.jpeg',
+          ),
+        ),
+        onTap: () {},
+      ),
+    );
   }
 }
