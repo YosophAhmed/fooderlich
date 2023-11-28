@@ -4,6 +4,7 @@ import 'recipes_screen.dart';
 import 'grocery_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/models.dart';
+import 'package:go_router/go_router.dart';
 
 class Home extends StatefulWidget {
   final int currentTab;
@@ -51,7 +52,15 @@ class _HomeState extends State<Home> {
               Theme.of(context).textSelectionTheme.selectionColor,
           currentIndex: appStateManger.getSelectedTab,
           onTap: (index) {
-            appStateManger.goToTab(index: index);
+            Provider.of<AppStateManger>(context, listen: false)
+                .goToTab(index: index);
+
+            context.goNamed(
+              'home',
+              pathParameters: {
+                'tab': '$index',
+              },
+            );
           },
           items: const [
             BottomNavigationBarItem(

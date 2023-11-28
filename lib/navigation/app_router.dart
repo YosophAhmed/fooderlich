@@ -29,7 +29,38 @@ class AppRouter {
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
       ),
+      GoRoute(
+        name: 'home',
+        path: '/:tab',
+        builder: (context, state) {
+          final tab = int.tryParse(state.pathParameters['tab'] ?? '') ?? 0;
+          return Home(
+            key: state.pageKey,
+            currentTab: tab,
+          );
+        },
+        routes: [],
+      ),
     ],
+    redirect: (context, state) {
+      final loggedIn = appStateManger.isLoggedIn;
+      final loggingIn = state.fullPath == '/login';
+
+      if (!loggedIn) {
+        return loggingIn ? null : '/login';
+      }
+
+      final isOnBoardingComplete = appStateManger.isOnboardingComplete;
+      final onboarding = state.fullPath == '/onboarding';
+
+      if (!isOnBoardingComplete) {
+        return onboarding ? null : '/onboarding';
+      }
+      if (loggingIn || onboarding) {
+        return '/${FooderlichTab.explore}';
+      }
+      return null;
+    },
     errorPageBuilder: (context, state) {
       return MaterialPage(
         key: state.pageKey,
