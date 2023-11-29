@@ -27,58 +27,50 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppStateManger>(builder: (
-      context,
-      appStateManger,
-      child,
-    ) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Fooderlich',
-            style: Theme.of(context).textTheme.headline6,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Fooderlich',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        centerTitle: true,
+        actions: [
+          profileButton(widget.currentTab),
+        ],
+      ),
+      body: IndexedStack(
+        index: widget.currentTab,
+        children: pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
+        currentIndex: widget.currentTab,
+        onTap: (index) {
+          Provider.of<AppStateManger>(context, listen: false)
+              .goToTab(index: index);
+          context.goNamed(
+            'home',
+            pathParameters: {
+              'tab': '$index',
+            },
+          );
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Explore',
           ),
-          centerTitle: true,
-          actions: [
-            profileButton(widget.currentTab),
-          ],
-        ),
-        body: IndexedStack(
-          index: appStateManger.getSelectedTab,
-          children: pages,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor:
-              Theme.of(context).textSelectionTheme.selectionColor,
-          currentIndex: appStateManger.getSelectedTab,
-          onTap: (index) {
-            Provider.of<AppStateManger>(context, listen: false)
-                .goToTab(index: index);
-
-            context.goNamed(
-              'home',
-              pathParameters: {
-                'tab': '$index',
-              },
-            );
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.explore),
-              label: 'Explore',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Recipes',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'To Buy',
-            ),
-          ],
-        ),
-      );
-    });
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Recipes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'To Buy',
+          ),
+        ],
+      ),
+    );
   }
 
   Widget profileButton(int currentTab) {
@@ -91,7 +83,14 @@ class _HomeState extends State<Home> {
             'assets/profile_pics/person_stef.jpeg',
           ),
         ),
-        onTap: () {},
+        onTap: () {
+          context.goNamed(
+            'profile',
+            pathParameters: {
+              'tab': '$currentTab',
+            },
+          );
+        },
       ),
     );
   }

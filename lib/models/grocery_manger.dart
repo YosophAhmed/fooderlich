@@ -6,6 +6,19 @@ class GroceryManger extends ChangeNotifier {
 
   List<GroceryItem> get groceryItems => List.unmodifiable(_groceryItems);
 
+  String getItemId(int index) {
+    final groceryItem = _groceryItems[index];
+    return groceryItem.id;
+  }
+
+  GroceryItem? getGroceryItem(String id) {
+    final index = _groceryItems.indexWhere(
+      (element) => element.id == id,
+    );
+    if (index == -1) return null;
+    return groceryItems[index];
+  }
+
   void deleteItem(int index) {
     _groceryItems.removeAt(index);
     notifyListeners();
@@ -16,7 +29,10 @@ class GroceryManger extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateItem(GroceryItem item, int index) {
+  void updateItem(GroceryItem item) {
+    final index = _groceryItems.indexWhere(
+      (element) => element.id == item.id,
+    );
     _groceryItems[index] = item;
     notifyListeners();
   }

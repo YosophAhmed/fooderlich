@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../models/models.dart';
 import '../components/grocery_tile.dart';
+import 'package:go_router/go_router.dart';
 
 class GroceryItemScreen extends StatefulWidget {
   final Function(GroceryItem) onCreate;
@@ -83,11 +84,17 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
                   _timeOfDay.minute,
                 ),
               );
-              if(widget.isUpdating) {
+              if (widget.isUpdating) {
                 widget.onUpdate(groceryItem);
               } else {
                 widget.onCreate(groceryItem);
               }
+              context.goNamed(
+                'home',
+                pathParameters: {
+                  'tab': '${FooderlichTab.toBuy}',
+                },
+              );
             },
             icon: const Icon(Icons.check),
           ),

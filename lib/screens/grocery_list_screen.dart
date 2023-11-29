@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/grocery_tile.dart';
 import '../models/models.dart';
 import 'grocery_item_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class GroceryListScreen extends StatelessWidget {
   final GroceryManger groceryManger;
@@ -47,18 +48,13 @@ class GroceryListScreen extends StatelessWidget {
                 },
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GroceryItemScreen(
-                      originalItem: item,
-                      onUpdate: (item) {
-                        groceryManger.updateItem(item, index);
-                        Navigator.pop(context);
-                      },
-                      onCreate: (item) {},
-                    ),
-                  ),
+                final itemId = groceryManger.getItemId(index);
+                context.goNamed(
+                  'item',
+                  pathParameters: {
+                    'tab': '${FooderlichTab.toBuy}',
+                    'id': itemId,
+                  },
                 );
               },
             ),

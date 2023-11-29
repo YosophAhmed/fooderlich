@@ -39,7 +39,46 @@ class AppRouter {
             currentTab: tab,
           );
         },
-        routes: [],
+        routes: [
+          GoRoute(
+            name: 'item',
+            path: 'item/:id',
+            builder: (context, state) {
+              final itemId = state.pathParameters['id'] ?? '';
+              final item = groceryManger.getGroceryItem(itemId);
+
+              return GroceryItemScreen(
+                originalItem: item,
+                onCreate: (item) {
+                  groceryManger.addItem(item);
+                },
+                onUpdate: (item) {
+                  groceryManger.updateItem(item);
+                },
+              );
+            },
+          ),
+          GoRoute(
+            name: 'profile',
+            path: 'profile',
+            builder: (context, state) {
+              final tab = int.tryParse(state.pathParameters['tab'] ?? '') ?? 0;
+              return ProfileScreen(
+                user: profileManger.getUser,
+                currentTab: tab,
+              );
+            },
+            routes: [
+              GoRoute(
+                name: 'rw',
+                path: 'rw',
+                builder: (context, state) {
+                  return const WebViewScreen();
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     ],
     redirect: (context, state) {
