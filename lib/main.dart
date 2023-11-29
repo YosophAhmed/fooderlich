@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fooderlich/models/profile_manger.dart';
 import 'fooderlich_theme.dart';
 import 'package:provider/provider.dart';
 import 'models/models.dart';
