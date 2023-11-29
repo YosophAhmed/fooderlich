@@ -13,7 +13,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {}
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
   }
 
   @override
@@ -21,6 +23,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('raywenderlich.com'),
+      ),
+      body: const WebView(
+        initialUrl: 'https://www.raywenderlich.com/',
       ),
     );
   }
